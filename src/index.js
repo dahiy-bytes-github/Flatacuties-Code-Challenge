@@ -9,6 +9,16 @@ function displayCharacterNames(characters){
     characters.forEach(element => {
         const span = document.createElement("span")
         span.textContent = element.name
+        //span.style.cursor = "pointer"//make it appear clickable
+        span.addEventListener("click", () => displayCharacterDetails(element));
         characterBar.appendChild(span)
     });
+}
+function displayCharacterDetails(characters){
+    const name  = document.getElementById("name")
+    const image  = document.getElementById("image")
+    const vote  = document.getElementById("vote-count")
+    name.textContent = characters.name
+    image.src = characters.image
+    vote.textContent = characters.votes
 }
