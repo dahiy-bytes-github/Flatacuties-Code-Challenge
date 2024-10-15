@@ -1,7 +1,10 @@
-fetch("http://localhost:3000/characters")
-    .then(response => response.json(response))//convert the response to JSON
-    .then(data => displayCharacterNames(data))//call a function to display the data/character names
-    .catch(error => console.log("Can't fetch data", error));//handle errors
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("http://localhost:3000/characters")
+        .then(response => response.json())//convert the response to JSON
+        .then(data => displayCharacterNames(data))//call a function to display the data/character names
+        .catch(error => console.log("Can't fetch data", error));//handle errors
+})
+
 
 function displayCharacterNames(characters){
     const characterBar = document.getElementById('character-bar')
@@ -14,11 +17,34 @@ function displayCharacterNames(characters){
         characterBar.appendChild(span)
     });
 }
-function displayCharacterDetails(characters){
+function displayCharacterDetails(character){
     const name  = document.getElementById("name")
     const image  = document.getElementById("image")
     const vote  = document.getElementById("vote-count")
-    name.textContent = characters.name
-    image.src = characters.image
-    vote.textContent = characters.votes
+    name.textContent = character.name
+    image.src = character.image
+    vote.textContent = character.votes
+
+    const votesForm = document.getElementById("votes-form")
+    const resetBtn = document.getElementById("reset-btn")
+
+    votesForm.onsubmit =null
+    votesForm.onsubmit = (event) =>{
+        event.preventDefault()
+        const votesInput = document.getElementById("votes").value.trim()
+        if(votesInput){
+            const newVotes = parseInt(votesInput)
+            if(!isNaN(newVotes)){
+            character.votes += newVotes
+            vote.textContent = character.votes
+            }
+        }
+        
+        votesForm.reset()
+    } 
+   
+    resetBtn.addEventListener("click",()=> {
+        character.votes = 0;
+        vote.textContent = character.votes
+    })
 }
